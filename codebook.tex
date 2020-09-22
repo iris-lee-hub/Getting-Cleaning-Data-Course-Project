@@ -1,0 +1,323 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Codebook.md},
+  pdfauthor={Iris},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+
+\title{Codebook.md}
+\author{Iris}
+\date{9/21/2020}
+
+\begin{document}
+\maketitle
+
+\hypertarget{run_analysis.r-codebook}{%
+\subsection{Run\_analysis.R Codebook}\label{run_analysis.r-codebook}}
+
+Dataset used is from:
+\emph{\href{http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones}{Human
+Activity Recognition Using Smartphones}}.
+
+Dataset Zip File:
+\emph{\href{https://d396qusza40orc.cloudfront.net/getdata\%2Fprojectfiles\%2FUCI\%20HAR\%20Dataset.zip}{UCI
+HAR Dataset}}
+
+The run\_analysis code is organized into 6 parts.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Reading the files in
+\item
+  Combining files into one dataset
+\item
+  Extracting mean and standard deviation entries
+\item
+  Naming data set activities
+\item
+  Renaming data set variables
+\item
+  Creating a new tidy dataset, AvgData
+\end{enumerate}
+
+\hypertarget{reading-the-files-into-r}{%
+\subsection{1. Reading the files into
+R}\label{reading-the-files-into-r}}
+
+Each file in the UCI HAR Dataset was assigned a variable and column
+names \emph{features.txt}: lists each of the measurements taken. The
+measurements are recorded in the order of this list
+
+\begin{itemize}
+\tightlist
+\item
+  features \textless- features.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    n : the column that each measurement corresponds to in the data\\
+  \item
+    features : the name of the measurements
+  \end{itemize}
+\end{itemize}
+
+\emph{activity\_labels.txt}: lists each of the activities the
+participants do
+
+\begin{itemize}
+\tightlist
+\item
+  activities \textless- activity\_labels.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    activity\_label : the numeric code for each of the activities in the
+    data table\\
+  \item
+    activity : the name each code corresponds to
+  \end{itemize}
+\end{itemize}
+
+\textbf{Data in the Test file}
+
+\emph{subject\_test.txt}: lists which participant corresponds to each
+row in the data files
+
+\begin{itemize}
+\tightlist
+\item
+  subject\_test \textless- subject\_test.txt.
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    participant : lists which participant corresponds to the row
+  \end{itemize}
+\end{itemize}
+
+\emph{y\_test.txt}: lists which activity the participant did in each row
+
+\begin{itemize}
+\tightlist
+\item
+  y\_test \textless- y\_test.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ActivityLabel: The numeric codes for each activity observed in the
+    corresponding column
+  \end{itemize}
+\end{itemize}
+
+\emph{x\_test.txt}: The table of observations. Each row corresponds to a
+participant in x\_subject and an activity in y\_test. Each column
+corresponds to an observation in features
+
+\begin{itemize}
+\tightlist
+\item
+  y\_test \textless- y\_test.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    features\$functions is the complete list of observations
+    corresponding to each column of y\_test
+  \end{itemize}
+\end{itemize}
+
+\textbf{Data in the train file}
+
+\emph{subject\_train.txt}: lists which participant corresponds to each
+row in the data files
+
+\begin{itemize}
+\tightlist
+\item
+  subject\_train \textless- subject\_train.txt.
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    participant : lists which participant corresponds to the row
+  \end{itemize}
+\end{itemize}
+
+\emph{y\_train.txt}: lists which activity the participant did in each
+row
+
+\begin{itemize}
+\tightlist
+\item
+  y\_train \textless- y\_train.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    ActivityLabel: The numeric codes for each activity observed in the
+    corresponding column
+  \end{itemize}
+\end{itemize}
+
+\emph{x\_train.txt}: The table of observations. Each row corresponds to
+a participant in x\_subject and an activity in y\_train. Each column
+corresponds to an observation in features
+
+\begin{itemize}
+\tightlist
+\item
+  y\_train \textless- y\_train.txt\\
+\item
+  columns:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    features\$functions is the complete list of observations
+    corresponding to each column of y\_train
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{combining-all-the-files-into-a-single-dataset}{%
+\subsection{2. Combining all the files into a single
+dataset}\label{combining-all-the-files-into-a-single-dataset}}
+
+The files in this dataset are related as such:
+
+\begin{itemize}
+\tightlist
+\item
+  The ``x\_{[}test\textbar train{]}'' files are the data files that
+  contain the observations collected for each participant
+\item
+  The ``y\_{[}test\textbar train{]}'' files contain the activities
+  corresponding to each row of the ``x\_{[}test\textbar train{]}'' files
+\item
+  The ``subject\_{[}test\textbar train{]}'' files contain the
+  participant that corresponds to each row of the
+  ``x\_{[}test\textbar train{]}'' and ``y\_{[}test\textbar train{]}''
+  files
+\item
+  The ``features'' files contains the list of observations that
+  corresponds to the columns of the ``x\_{[}test\textbar train{]}''
+  files.
+\end{itemize}
+
+These files are the files that will be combined into one dataset. The
+``activity\_label'' files translate the numeric code of the activity as
+recorded in the ``y\_{[}test\textbar train{]}'' files to the activity's
+descriptive name.
+
+To combine these files, each of the {[}test\textbar train{]} pairs
+(x\_{[}test{]} with x\_{[}train{]}, etc) were bound by row using rbind()
+to form 3 dfs: X (with the x\_data), Y(with the y\_ data) and
+participants(with the subject\_data).
+
+Then thee participants, Y, and X files, were bound in this order, using
+cbind() to make a single table called merge.
+
+\#\#3. Extracting only the measurements on mean and standard deviation.
+
+For this step, I used grep() on the names of the columns to identify the
+columns that contain ``mean'' or ``std''' in it -- i.e.~the measurements
+on mean and standard deviation. I set value = TRUE to get the character
+names of the columns instead of the indices to check my work, but this
+is not necessary. This was saved as selected\_names.
+
+Then, I indexed participants, activities and selected\_names from merge,
+in that order, to get a data table with the participant and activity
+columns as well as all the observations on mean or standard deviation,
+named selected.
+
+\#\#4.Naming data set activities Using the data file
+``activity\_label.txt'' saved as activities, I translated the numeric
+codes for the activities from selected to the descriptive names by
+indexing
+
+\#\#5. Renaming the dataset with descriptive variable names
+
+gsub() was used on the names of the data set to find and replace
+undescriptive parts of the name with more descriptive counterparts, as
+well as removing unnecesary symbols and periods.
+
+\#\#6. Create a tidy dataset aggregate() was used to apply the mean()
+function to each observation column of the data table, grouped by
+participant and activity.
+
+This was saved into a file called AvgData.txt
+
+\end{document}
