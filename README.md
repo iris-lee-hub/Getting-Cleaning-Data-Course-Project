@@ -6,7 +6,8 @@ Dataset used is from:
 Dataset Zip File:
 *[UCI HAR Dataset](https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip)*
 
-#Files
+# Files  
+
 
 * codebook.Rmd is a codebook that describes and explains the code in the run_analysis.R script used to clean the data.  
 * codebook.pdf is the pdf printout of codebook.Rmd  
